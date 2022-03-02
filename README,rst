@@ -1,0 +1,4 @@
+COMMANDS-
+
+Acvtivate Working Project Environment:  c:\Users\benja\OneDrive\Documents\Uni\YEAR2\ECM2429_SD2\python_project\project_env\Scripts\activate.bat
+Pip install PyAudio: pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl   
