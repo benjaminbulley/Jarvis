@@ -4,7 +4,7 @@ from source.play import play
 
 logging.basicConfig(level=logging.DEBUG)
 
-say = "How was your day??"
+say = "Hello there! What can I help you with?"
 
 
 def tts(text):
@@ -38,8 +38,8 @@ def tts(text):
     # If the data was zipped by the server, requests will unzip it by default.
     # https://docs.python-requests.org/en/master/user/quickstart/#binary-response-content
 
-    # with open("hello.wav", "wb") as out:
-    #    out.write(response.content)
+    # with open("../wav_files/hello.wav", "wb") as out:
+    #     out.write(response.content)
 
     play(response.content)
 

@@ -46,4 +46,4 @@ def random_clip(cur: sqlite3.Cursor) -> str:
     return (row[0], row[1])
 
 
-play("../wav_files/path_of_file.wav")
+play("../wav_files/hello.wav")

@@ -41,30 +41,15 @@ class GUI:
 
         # Jarvis' Switch
         # Keep track of the switch button state on/off
-        self.switch_on = True
-        self.idx = 00
+        self.switch_on = False
+        self.background_color_index = 00
         self.colors = ["black", "cyan", "lightblue", "olive"]
         self.on_img = PhotoImage(file="../images/on.png")
         self.off_img = PhotoImage(file="../images/off.png")
-        self.switch_button = ttk.Button(mainframe, image=self.on_img, command=self.switch)
+        self.switch_button = ttk.Button(mainframe, image=self.off_img, command=self.switch, state=NORMAL)
         self.switch_button.pack(pady=50)
 
-        # # Mic On/off Button
-        # self.mic_on = True
-        # self.mic_on_off_button_text = tkinter.StringVar(value='Mic On')
-        # self.mic_on_off_button = ttk.Button(mainframe, textvariable=self.mic_on_off_button_text, command=self.mic_on)
-        # self.mic_on_off_button.grid(column=1, row=2, columnspan=2, rowspan=2)
-        # self.style.configure('TButton', background='lightblue')
-        # self.style.configure('TFrame', background=self.colors[0])
         #
-        # # Define mic on_img/off button
-        # self.mic_on_off_button = ttk.Button(
-        #     mainframe,
-        #     image=self.on_img,
-        #     textvariable=self.mic_on_off_button_text,
-        #     command=self.click
-        # )
-
         self.listening = False
 
     def run(self, a: str):
@@ -84,43 +69,25 @@ class GUI:
         logger.info(f"color={color}")
         self.style.configure('TFrame', background=color)
 
-    def click(self):
-        """Called when mic_on_off_button clicked.
-        """
-        logger.info("click")
-        self.click_action()
-
-    def click_action(self):
-        """An example action to use with click()
-        """
-        self.idx += 1
-        if self.idx == len(self.colors):
-            self.idx = 0
-        self.set_background(self.colors[self.idx])
-
     def switch(self):
-        if self.switch_on:
-            self.switch_button.config(image=self.off_img)
-            self.switch_on = False
-        else:
+        self.background_color_index += 1
+        if not self.switch_on:
             self.switch_button.config(image=self.on_img)
+            self.background_color_index = 1
             self.switch_on = True
+            self.listening = True
+        else:
+            self.switch_button.config(image=self.off_img)
+            self.background_color_index = 0
+            self.switch_on = False
+            self.listening = False
+        self.set_background(self.colors[self.background_color_index])
 
-
-
-    # def mic_on(self):
-    #     if self.mic_on_off_button.config('text') == 'Mic On':
-    #
-    #         self.listening = True
-    #
-    #     else:
-    #         self.idx = len(self.colors)
-    #         self.mic_on_off_button_text = 'Mic off'
-    #         self.set_background(self.colors[self.idx])
-    #         self.listening = False
-
-
-#  def listening(self):
+    def listening(self):
+        if self.listening:
+            self.switch_button.config(state=DISABLED)
+            self.background_color_index = 2
+        self.set_background(self.colors[self.background_color_index])
 
 
 if __name__ == "__main__":
