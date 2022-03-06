@@ -1,10 +1,10 @@
 import requests
 import logging
-from source.play import play
+from source.player import play
 
 logging.basicConfig(level=logging.DEBUG)
 
-say = "Hello there! What can I help you with?"
+say = "Hello there!"
 
 
 def tts(text):

@@ -1,15 +1,14 @@
-from tkinter import *
-
 """
 Front-End.
 
 This code defines the Graphical User Interface class
 
 """
-
+from tkinter import *
 import logging
 import tkinter
 from tkinter import ttk
+import record
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +30,8 @@ class GUI:
         self.root.title(name)
         self.root.geometry("300x300+250+100")
 
-        # Global style
+        # Global style and Frame definition
         self.style = ttk.Style(self.root)
-        # Frame definition
         mainframe = ttk.Frame(self.root)
         mainframe.grid(column=0, row=0, sticky=(tkinter.N, tkinter.W, tkinter.E, tkinter.S))
         self.root.columnconfigure(0, weight=2)
@@ -49,8 +47,8 @@ class GUI:
         self.switch_button = ttk.Button(mainframe, image=self.off_img, command=self.switch, state=NORMAL)
         self.switch_button.pack(pady=50)
 
-        #
-        self.listening = False
+        self.db_data = None
+        self.gui_mode = "ready"
 
     def run(self, a: str):
         """[summary]
@@ -75,19 +73,42 @@ class GUI:
             self.switch_button.config(image=self.on_img)
             self.background_color_index = 1
             self.switch_on = True
-            self.listening = True
         else:
             self.switch_button.config(image=self.off_img)
             self.background_color_index = 0
             self.switch_on = False
-            self.listening = False
         self.set_background(self.colors[self.background_color_index])
 
+    def gui_mode(self):
+        return self.gui_mode
+
     def listening(self):
-        if self.listening:
+        if self.gui_mode == "listening":
             self.switch_button.config(state=DISABLED)
             self.background_color_index = 2
         self.set_background(self.colors[self.background_color_index])
+
+    def answer(self):
+        if self.gui_mode == "answer":
+            self.background_color_index = 3
+        self.set_background(self.colors[self.background_color_index])
+
+    def play(self):
+        if self.gui_mode == "play":
+            self.background_color_index = 4
+        self.set_background(self.colors[self.background_color_index])
+
+    def _after(self):
+        self.root.after(self._ms, self._after)
+        self._func()
+
+    def set_after(self, ms, func):
+        self.root.after(ms, self._after)
+        self._ms = ms
+        self._func = func
+
+    def state(self):
+        return self._state
 
 
 if __name__ == "__main__":

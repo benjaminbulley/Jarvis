@@ -13,7 +13,7 @@ def record():
     # Record at 44400 samples per second
     smpl_rt = 44400
     seconds = 4
-    filename = "../wav_files/path_of_file.wav"
+    filename = "path_of_file.wav"
 
     # Create an interface to PortAudio
     pa = pyaudio.PyAudio()
@@ -50,4 +50,3 @@ def record():
     sf.close()
 
 
-record()

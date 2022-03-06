@@ -44,7 +44,7 @@ headers = {'Accept': 'application/json;text/xml',
            'Transfer-Encoding': 'chunked',
            'Expect': '100-continue'}
 
-audio_file = open("../wav_files/path_of_file.wav", "rb")
+audio_file = open("path_of_file.wav", "rb")
 
 
 # send request with chunked data

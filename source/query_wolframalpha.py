@@ -1,6 +1,6 @@
 import wolframalpha
 
-question = "WHat time is it in New York?"
+q = "WHat time is it in New York?"
 
 
 def query(question):
@@ -13,4 +13,4 @@ def query(question):
     return answer
 
 
-query(question)
+query(q)
