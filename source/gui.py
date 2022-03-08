@@ -50,13 +50,7 @@ class GUI:
         self.db_data = None
         self.gui_mode = "ready"
 
-    def run(self, a: str):
-        """[summary]
-
-        Args:
-            a (str): [description]
-        """
-        self.root.mainloop()
+    def run(self): self.root.mainloop()
 
     def set_background(self, color: str):
         """Set the display colour.
@@ -73,6 +67,7 @@ class GUI:
             self.switch_button.config(image=self.on_img)
             self.background_color_index = 1
             self.switch_on = True
+            self.gui_mode = "listening"
         else:
             self.switch_button.config(image=self.off_img)
             self.background_color_index = 0
