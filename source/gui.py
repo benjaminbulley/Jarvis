@@ -85,6 +85,7 @@ class GUI:
 
     def answer(self):
         if self.gui_mode == "answer":
+            self.switch_button.config(state=NORMAL)
             self.background_color_index = 3
         self.set_background(self.colors[self.background_color_index])
 
