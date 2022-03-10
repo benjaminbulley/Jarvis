@@ -6,8 +6,46 @@ from time import sleep
 import stt
 import random
 import query_wolframalpha
+from threading import Thread
+from source.player import Player
 
 logger = logging.getLogger(__name__)
+
+
+class PlayerThread(Thread):
+    """
+    """
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs=None, daemon=True):
+        super().__init__(group, target, name, args, kwargs, daemon=daemon)
+        self.args = args
+        self.kwargs = kwargs
+        self.player = Player()
+        self.player.paused = True
+
+    def run(self):
+        """
+        """
+        queueIn: Queue = self.args[0]
+        #  queueOut: Queue = self.args[1]
+        while True:
+            try:
+                msg = queueIn.get_nowait()
+                queueIn.task_done()
+                if msg["cmd"] == "pause":
+                    self.player.paused = True
+                elif msg["cmd"] == "play":
+                    self.player.paused = False
+                elif msg["cmd"] == "load":
+                    self.player.load(msg["data"])
+            except Empty:
+                pass
+            if self.player.paused:
+                #  queueOut.put("paused")
+                sleep(0.1)
+            else:
+                self.player.play()
+                #  queueOut.put("playing")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
@@ -42,10 +80,11 @@ if __name__ == "__main__":
         results_from_stt = stt.stt(output).lower()
         print(results_from_stt)
 
-    def process_input(sample_input):
-        if "play" in sample_input:
-            None # TBC
-
+    def process_input(some_input):
+        if "play" in some_input:
+            print("tbd")
+        else:
+            wolframalpha_response = query_wolframalpha.query(some_input)
 
 
     def body():
