@@ -4,8 +4,7 @@ import json
 import time
 import logging
 
-# subscriptionKey = "8025156711b145b69576a9a63c80f198"
-subscriptionKey = "00487878-43e4-4427-a4d7-8cf15f33a069"
+subscriptionKey = "8025156711b145b69576a9a63c80f198"
 region = "uksouth"
 
 # a common wave header, with zero audio length
