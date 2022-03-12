@@ -7,6 +7,8 @@ import stt
 import random
 import query_wolframalpha
 from threading import Thread
+from sounds_db import SoundDB
+
 from source.player import Player
 
 logger = logging.getLogger(__name__)
@@ -15,6 +17,7 @@ logger = logging.getLogger(__name__)
 class PlayerThread(Thread):
     """
     """
+
     def __init__(self, group=None, target=None, name=None,
                  args=(), kwargs=None, daemon=True):
         super().__init__(group, target, name, args, kwargs, daemon=daemon)
@@ -26,26 +29,36 @@ class PlayerThread(Thread):
     def run(self):
         """
         """
-        queueIn: Queue = self.args[0]
-        #  queueOut: Queue = self.args[1]
+
+
+class DBTread(Thread):
+    """
+    """
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs=None, daemon=True):
+        super().__init__(group, target, name, args, kwargs, daemon=daemon)
+        self.args = args
+        self.kwargs = kwargs
+        # Open DB in read-only mode
+        self.db = SoundDB("file:music.db?mode=ro")
+
+    def run(self):
+        """
+        """
+        queue_in: Queue = self.args[0]
+        queue_out: Queue = self.args[1]
         while True:
-            try:
-                msg = queueIn.get_nowait()
-                queueIn.task_done()
-                if msg["cmd"] == "pause":
-                    self.player.paused = True
-                elif msg["cmd"] == "play":
-                    self.player.paused = False
-                elif msg["cmd"] == "load":
-                    self.player.load(msg["data"])
-            except Empty:
-                pass
-            if self.player.paused:
-                #  queueOut.put("paused")
-                sleep(0.1)
-            else:
-                self.player.play()
-                #  queueOut.put("playing")
+            msg = queue_in.get()
+            queue_in.task_done()
+            if msg["cmd"] == "albums":
+                albums = self.db.get_album_names()
+                queue_out.put({"from": "db", "cmd": "albums", "data": albums})
+            elif msg["cmd"] == "tracks":
+                tracks = self.db.get_track_names(msg["data"])
+                queue_out.put({"from": "db", "cmd": "tracks", "data": tracks})
+            elif msg["cmd"] == "content":
+                content = self.db.get_content(msg["data"])
+                queue_out.put({"from": "db", "cmd": "content", "data": content})
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
@@ -75,19 +88,21 @@ if __name__ == "__main__":
     print(sample_input.lower())
 
 
+
     def process_speech():
         output = open("path_of_file.wav", "rb")
         results_from_stt = stt.stt(output).lower()
         print(results_from_stt)
 
+
     def process_input(some_input):
-        if "play" in some_input:
+        if some_input.startswith("play"):
             print("tbd")
         else:
             wolframalpha_response = query_wolframalpha.query(some_input)
 
 
-    def body():
+    def gui_state():
         if gui.gui_mode == "listening":
             gui.listening()
             record.record()
@@ -100,5 +115,5 @@ if __name__ == "__main__":
     # with open("sample.wav", "rb") as f:
     #    playQueue.put({"cmd": "load", "data": f.read()})
 
-    gui.set_after(200, body)
+    gui.set_after(200, gui_state)
     gui.run()

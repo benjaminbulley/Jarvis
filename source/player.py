@@ -15,7 +15,7 @@ class Player:
         self._wf = None
         self.paused = False
 
-    def __del__(self):
+    def close(self):
         # close PyAudio
         logger.warning("close")
         self.p.terminate()
@@ -50,5 +50,5 @@ class Player:
 
 if __name__ == "__main__":
     p = Player()
-    with open("path_of_file.wav", "rb") as f:
-        p.play()
+    with open("../wav_files/Dog_Bark.wav", "rb") as f:
+        p.play(f)

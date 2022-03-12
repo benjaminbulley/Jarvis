@@ -2,7 +2,8 @@ import os
 import requests
 
 key = "8025156711b145b69576a9a63c80f198"
-region = os.getenv("AZURE_REGION", "uksouth")
+# key = "75f4ae5e6a6b46b7b5c69315f5c8dcbe"
+region = "uksouth"
 
 headers = {
     'Ocp-Apim-Subscription-Key': key

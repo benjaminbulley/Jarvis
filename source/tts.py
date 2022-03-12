@@ -1,14 +1,16 @@
 import requests
 import logging
-from source.player import play
+from source.player import Player
 
 logging.basicConfig(level=logging.DEBUG)
 
-say = "Hello there!"
+say = "Hi, I'm your assistant! How can I help?"
+
+p = Player()
 
 
 def tts(text):
-    key = "aec62efd1ccd427f886ca2ca1a1a47a6"
+    key = "00487878-43e4-4427-a4d7-8cf15f33a069"
     region = "uksouth"
 
     url = f'https://{region}.tts.speech.microsoft.com/cognitiveservices/v1'
@@ -41,7 +43,7 @@ def tts(text):
     # with open("../wav_files/hello.wav", "wb") as out:
     #     out.write(response.content)
 
-    play(response.content)
+    p.play(response.content)
 
 
 tts(say)
