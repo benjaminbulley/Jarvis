@@ -1,5 +1,4 @@
 import logging
-
 import record
 from source.gui import GUI
 from time import sleep
@@ -8,7 +7,6 @@ import random
 import query_wolframalpha
 from threading import Thread
 from sounds_db import SoundDB
-
 from source.player import Player
 
 logger = logging.getLogger(__name__)
