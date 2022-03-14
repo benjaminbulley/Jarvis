@@ -88,7 +88,6 @@ if __name__ == "__main__":
     print(sample_input.lower())
 
 
-
     def process_speech():
         output = open("path_of_file.wav", "rb")
         results_from_stt = stt.stt(output).lower()

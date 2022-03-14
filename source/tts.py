@@ -4,13 +4,14 @@ from source.player import Player
 
 logging.basicConfig(level=logging.DEBUG)
 
-say = "Hi, I'm your assistant! How can I help?"
+say = "Hello! How can I help?"
 
 p = Player()
 
 
 def tts(text):
-    key = "00487878-43e4-4427-a4d7-8cf15f33a069"
+    # key = "8025156711b145b69576a9a63c80f198"
+    key = "75f4ae5e6z6b46b7b5c69315f5c8dcbe"
     region = "uksouth"
 
     url = f'https://{region}.tts.speech.microsoft.com/cognitiveservices/v1'
@@ -40,10 +41,10 @@ def tts(text):
     # If the data was zipped by the server, requests will unzip it by default.
     # https://docs.python-requests.org/en/master/user/quickstart/#binary-response-content
 
-    # with open("../wav_files/hello.wav", "wb") as out:
-    #     out.write(response.content)
+    with open("../wav_files/hello.wav", "wb") as out:
+        out.write(response.content)
 
-    p.play(response.content)
+    # p.play(response.content)
 
 
 tts(say)

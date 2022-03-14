@@ -4,7 +4,7 @@ import json
 import time
 import logging
 
-subscriptionKey = "8025156711b145b69576a9a63c80f198"
+subscriptionKey = "75f4ae5e6z6b46b7b5c69315f5c8dcbe"
 region = "uksouth"
 
 # a common wave header, with zero audio length
@@ -57,4 +57,4 @@ def stt(path):
     latency = get_response_time - upload_finish_time
     print("Latency = %sms" % int(latency * 1000))
 
-stt(path)
+stt()

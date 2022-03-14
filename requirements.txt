@@ -26,7 +26,7 @@ packaging==21.3
 pipwin==0.5.1
 pluggy==1.0.0
 py==1.11.0
-PyAudio @ file:///C:/Users/benja/OneDrive/Documents/Uni/YEAR2/ECM2429_SD2/python_project/PyAudio-0.2.11-cp310-cp310-win_amd64.whl
+PyAudio @ file: PyAudio-0.2.11-cp310-cp310-win_amd64.whl
 pyjsparser==2.7.1
 pyparsing==3.0.7
 PyPrind==2.11.3
