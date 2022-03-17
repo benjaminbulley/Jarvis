@@ -94,14 +94,14 @@ class GUI:
             self.background_color_index = 4
         self.set_background(self.colors[self.background_color_index])
 
-    def _after(self):
-        self.root.after(self._ms, self._after)
-        self._func()
+    def after(self):
+        self.root.after(self.ms, self.after)
+        self.func()
 
     def set_after(self, ms, func):
-        self.root.after(ms, self._after)
-        self._ms = ms
-        self._func = func
+        self.root.after(ms, self.after)
+        self.ms = ms
+        self.func = func
 
     def state(self):
         return self._state
@@ -110,4 +110,4 @@ class GUI:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     a = GUI("Jarvis")
-    a.run("go")
+    a.run()

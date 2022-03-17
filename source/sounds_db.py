@@ -14,7 +14,7 @@ class SoundDB:
     """
     def __init__(self, con: str) -> None:
         """
-        :param con: a valid URI, e.g. "file:music.db?mode=rw"
+        :param con: a valid URI, e.g. "file:sounds.db?mode=rw"
         :type con: str
         """
         self.uri = con
@@ -36,6 +36,6 @@ class SoundDB:
             return row[0]
 
 
-SoundDB("file:sounds.db?mode=ro")
+# SoundDB("file:sounds.db?mode=ro")
 
 
