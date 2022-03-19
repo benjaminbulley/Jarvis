@@ -50,5 +50,5 @@ class Player:
 
 if __name__ == "__main__":
     p = Player()
-    with open("../wav_files/hello.wav", "rb") as f:
+    with open("output.wav", "rb") as f:
         p.play(f)
