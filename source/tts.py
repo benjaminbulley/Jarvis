@@ -36,15 +36,15 @@ def text_speech(text):
     # If the data was zipped by the server, requests will unzip it by default.
     # https://docs.python-requests.org/en/master/user/quickstart/#binary-response-content
 
-    with open("output.wav", "wb") as out:
+    with open("hello.wav", "wb") as out:
         out.write(response.content)
 
     p = Player()
-    with open("output.wav", "rb") as file:
+    with open("hello.wav", "rb") as file:
         p.play(file)
 
 
 if __name__ == "__main__":
-    text = "Who let the dogs out?"
+    text = "Hello there, how can I help?"
     text_speech(text)
 

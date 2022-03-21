@@ -11,31 +11,9 @@ import query_wolframalpha
 from threading import Thread
 from sounds_db import SoundDB as db
 from source.player import Player
-from play_random import random_clip
+from play_random import music_clip, play_random_music
 
 logger = logging.getLogger(__name__)
-
-
-class PlayerThread(Thread):
-    """
-    """
-
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs=None, daemon=True):
-        super().__init__(group, target, name, args, kwargs, daemon=daemon)
-        self.args = args
-        self.kwargs = kwargs
-        self.player = Player()
-        self.player.paused = True
-
-    def run(self):
-        """
-        """
-        while True:
-
-
-
-
 
 
 if __name__ == "__main__":
@@ -80,14 +58,14 @@ if __name__ == "__main__":
             gui.listening()
             record.record()
             gui.gui_mode = "answer"
-            # text_from_speech = process_speech()
-            text_from_speech = sample_input
+            text_from_speech = process_speech()
             if text_from_speech.startswith("Play"):
+                gui.gui_mode = "play"
                 sound_request = text_from_speech[:5]
                 if sound_request == "music":
-
-
-
+                    play_random_music()
+                elif sound_request == "loud":
+                    play_random_music()
 
 
 

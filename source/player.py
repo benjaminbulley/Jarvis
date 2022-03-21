@@ -24,7 +24,6 @@ class Player:
         """
         audio_in is either a path to a WAV file or bytes containing WAV audio.
         """
-
         if type(audio_in) == type(b''):
             wf = wave.open(io.BytesIO(audio_in), 'rb')
         else:
@@ -50,5 +49,5 @@ class Player:
 
 if __name__ == "__main__":
     p = Player()
-    with open("output.wav", "rb") as f:
+    with open("../wav_files/Left_hand_free.wav", "rb") as f:
         p.play(f)
