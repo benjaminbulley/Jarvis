@@ -9,7 +9,8 @@ RATE = 16000
 
 logger = logging.getLogger(__name__)
 
-def record(filename: str, duration=5.0) -> bool:
+
+def record(duration=5.0) -> bool:
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE,
@@ -30,11 +31,10 @@ def record(filename: str, duration=5.0) -> bool:
     stream.close()
     p.terminate()
 
-    wf = wave.open(filename, 'wb')
+    wf = wave.open("output.wav", 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
     return True
-

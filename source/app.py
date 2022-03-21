@@ -1,41 +1,10 @@
 import logging
 import sqlite3
-import time
-
 import record
-from source.gui import GUI
-from time import sleep
+from gui import GUI
 import stt
 import random
-import query_wolframalpha
-from threading import Thread
-from sounds_db import SoundDB as db
-from source.player import Player
-from play_random import random_clip
-
 logger = logging.getLogger(__name__)
-
-
-class PlayerThread(Thread):
-    """
-    """
-
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs=None, daemon=True):
-        super().__init__(group, target, name, args, kwargs, daemon=daemon)
-        self.args = args
-        self.kwargs = kwargs
-        self.player = Player()
-        self.player.paused = True
-
-    def run(self):
-        """
-        """
-        while True:
-
-
-
-
 
 
 if __name__ == "__main__":
@@ -69,10 +38,12 @@ if __name__ == "__main__":
 
 
     def process_speech():
-        output = open("path_of_file.wav", "rb")
-        results_from_stt = stt.stt(output)
+        output = open("output.wav", "rb")
+        results_from_stt = stt.speech_to_text(output)
         print("stt results: ", results_from_stt)
         return results_from_stt
+
+    def play_audio():
 
 
     def app_state():
@@ -80,15 +51,10 @@ if __name__ == "__main__":
             gui.listening()
             record.record()
             gui.gui_mode = "answer"
-            # text_from_speech = process_speech()
-            text_from_speech = sample_input
+            text_from_speech = process_speech()
             if text_from_speech.startswith("Play"):
-                sound_request = text_from_speech[:5]
-                if sound_request == "music":
-
-
-
-
+                sound_request = text_from_speech[5:]
+                # if sound_request == "music":
 
 
 
