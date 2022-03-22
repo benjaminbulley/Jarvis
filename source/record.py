@@ -31,10 +31,11 @@ def record(duration=5.0) -> bool:
     stream.close()
     p.terminate()
 
-    wf = wave.open("output.wav", 'wb')
+    wf = wave.open("../wav_files/output.wav", 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
     return True
+

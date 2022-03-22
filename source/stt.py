@@ -29,3 +29,10 @@ def speech_to_text(sound_as_binary):
 
     print(response.json())
     return response
+
+
+def process_speech():
+    output = open("../wav_files/output.wav", "rb")
+    results_from_stt = speech_to_text(output)
+    print("stt results: ", results_from_stt)
+    return results_from_stt
