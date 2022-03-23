@@ -1,7 +1,7 @@
 import wolframalpha
 
 
-def query(q: str):
+def query(question: str):
     app_id = "6QLE9Y-R347K3E3HV"
     client = wolframalpha.Client(app_id)
 

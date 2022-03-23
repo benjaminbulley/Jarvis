@@ -9,6 +9,7 @@ import logging
 import tkinter
 from tkinter import ttk
 import record
+from player import Player
 
 logger = logging.getLogger(__name__)
 
@@ -49,8 +50,12 @@ class GUI:
 
         self.db_data = None
         self.gui_mode = "ready"
+        self.p = Player()
 
-    def run(self): self.root.mainloop()
+    def run(self):
+        self.background_color_index = 0
+        self.set_background(self.colors[self.background_color_index])
+        self.root.mainloop()
 
     def set_background(self, color: str):
         """Set the display colour.
@@ -68,11 +73,21 @@ class GUI:
             self.background_color_index = 1
             self.switch_on = True
             self.gui_mode = "listening"
+            self.hello()
         else:
             self.switch_button.config(image=self.off_img)
             self.background_color_index = 0
             self.switch_on = False
+            self.goodbye()
         self.set_background(self.colors[self.background_color_index])
+
+    def hello(self):
+        with open("../wav_files/hello.wav", "rb") as file:
+            self.p.play(file)
+
+    def goodbye(self):
+        with open("../wav_files/goodbye.wav", "rb") as file:
+            self.p.play(file)
 
     def gui_mode(self):
         return self.gui_mode

@@ -31,11 +31,26 @@ class SoundDB:
     def get_content(self, sound: str) -> bytes:
         with sqlite3.connect(self.uri, uri=True) as con:
             cur = con.cursor()
-            cur.execute('SELECT content FROM tunes WHERE name=?', (sound,))
+            cur.execute('SELECT content FROM sounds WHERE name=?', (sound,))
             row = cur.fetchone()
             return row[0]
+
+    def get_music(self, cur: sqlite3.Cursor) -> str:
+        # Pick one clip at random
+        with sqlite3.connect(self.uri, uri=True) as con:
+            cur.execute('SELECT content FROM sounds WHERE music=1, ORDER BY random() LIMIT 1')
+            row = cur.fetchone()
+            return row[0]
+
+    def get_loud_sound(self, cur: sqlite3.Cursor) -> str:
+        # Pick one clip at random
+        with sqlite3.connect(self.uri, uri=True) as con:
+            cur.execute('SELECT description, content FROM sounds WHERE loud=1, ORDER BY random() LIMIT 1')
+            row = cur.fetchone()
+            print("row:::::", row[0])
+            return (row[0], row[1])
 
 
 # SoundDB("file:sounds.db?mode=ro")
 
-
+SoundDB.get_content()

@@ -1,20 +1,26 @@
 import logging
 import sqlite3
-import time
-
+import threading
 import record
-from source.gui import GUI
-from time import sleep
-import stt
-import random
-import query_wolframalpha
-from threading import Thread
-from sounds_db import SoundDB as db
-from source.player import Player
-from play_random import music_clip, play_random_music
+from sounds_db import SoundDB
+from gui import GUI
+from player import Player
+from query_wolframalpha import query
+from stt import process_speech
+from tts import text_speech, didnt_understand
 
 logger = logging.getLogger(__name__)
 
+
+def play_audio(play_request):
+    if play_request == "music":
+        music = SoundDB.get_music(cur)
+        Player.play(music)
+    elif play_request.startswith == "loud":
+        loud_sound = SoundDB.get_loud_sound()
+
+
+play_thread = threading.Thread(target=play_audio, args=(1,), daemon=True)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
@@ -30,49 +36,24 @@ if __name__ == "__main__":
 
     print("gui mode", gui.gui_mode)
 
-    example_inputs = [
-        "What time is it in London?",
-        "What are the three laws of robotics?",
-        "Does Santa Claus exist?",
-        "How many calories are there in fudge?",
-        "What is the distance between London and New York?",
-        "Play loud noise",
-        "Play door slam",
-        "Play dog bark",
-        "Play quiet music"
-    ]
-
-    sample_input = random.sample(example_inputs, len(example_inputs))[0].lower()
-    print("sample input: " ,sample_input.lower())
-
-
-    def process_speech():
-        output = open("path_of_file.wav", "rb")
-        results_from_stt = stt.stt(output)
-        print("stt results: ", results_from_stt)
-        return results_from_stt
-
 
     def app_state():
         if gui.gui_mode == "listening":
             gui.listening()
             record.record()
-            gui.gui_mode = "answer"
             text_from_speech = process_speech()
-            if text_from_speech.startswith("Play"):
-                gui.gui_mode = "play"
-                sound_request = text_from_speech[:5]
-                if sound_request == "music":
-                    play_random_music()
-                elif sound_request == "loud":
-                    play_random_music()
+            if text_from_speech is None:
+                didnt_understand()
+            elif text_from_speech.startswith("Play"):
+                sound_request = text_from_speech[5:]
+                play_audio(sound_request)
+            else:
+                wolframalpha_response = query(text_from_speech)
+                text_speech(wolframalpha_response)
+                gui.gui_mode = "answer"
+        else:
+            gui.gui_mode = "listening"
 
-
-
-
-    # If no database available can insert data to play like this -
-    # with open("sample.wav", "rb") as f:
-    #    playQueue.put({"cmd": "load", "data": f.read()})
 
     gui.set_after(200, app_state)
     gui.run()

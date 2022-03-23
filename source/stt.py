@@ -23,11 +23,16 @@ def speech_to_text(sound_as_binary):
         # 'Expect': '100-continue'
     }
     response = requests.post(url=url, params=params, data=sound_as_binary, headers=headers)
+    if response.status_code == 200:
+        return response.json().get("DisplayText")
     # print("#" *20, response)
+
     print(response.json())
-    print()
-    # print(response["RecognitionStatus"])
-    print(response["content"]["DisplayText"])
     return response
 
 
+def process_speech():
+    output = open("../wav_files/output.wav", "rb")
+    results_from_stt = speech_to_text(output)
+    print("stt results: ", results_from_stt)
+    return results_from_stt
