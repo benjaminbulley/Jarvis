@@ -6,13 +6,15 @@ Run this module to use the user interface to interact with Jarvis
 """
 import logging
 import sqlite3
+from time import sleep
+
 import record
-from player_logic import play_audio
+from db_interface import play_audio
 from gui import GUI
-from query_wolframalpha import wolfram_query
+from query_wolframalpha import wolframalpha_query
 from stt import process_speech
 from tts import text_speech
-from audio_player import player
+
 
 
 logger = logging.getLogger(__name__)
@@ -36,19 +38,21 @@ if __name__ == "__main__":
         """
         if gui.gui_mode == "listening":
             gui.listening()
+            sleep(2)
             record.record()
             text_from_speech = process_speech()
             if text_from_speech is None:
-                pass
-            # play_audio("didnt_understand")
+                play_audio("didnt_understand")
             elif text_from_speech.startswith("Play"):
                 gui.gui_mode = "play"
                 play_audio(text_from_speech)
+                sleep(2)
                 gui.gui_mode = "listening"
             else:
                 gui.gui_mode = "answer"
-                wolframalpha_response = wolfram_query(text_from_speech)
+                wolframalpha_response = wolframalpha_query(text_from_speech)
                 text_speech(wolframalpha_response)
+                sleep(2)
                 gui.gui_mode = "listening"
 
     """

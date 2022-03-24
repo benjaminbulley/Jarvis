@@ -1,5 +1,5 @@
 import sqlite3
-from audio_player import player
+import player
 """
 Interface to a SQLite3 database.
 Note that sqlite3 is thread safe, for reading, but requires
@@ -36,11 +36,11 @@ def play_audio(play_request: str):
         if "play loud" in play_request.lower():
             name, blob = loud_clip(cur)
             print(f"about to play:{name}")
-            player.player_thread(blob)
+            player.player_thread_local(blob)
         elif "play music" in play_request.lower():
             name, blob = music_clip(cur)
             print(f"about to play:{name}")
-            player.player_thread(blob)
+            player.player_thread_local(blob)
         else:
             what_to_play()
 
@@ -51,15 +51,15 @@ def play_audio(play_request: str):
 
 def didnt_understand():
     with open("../wav_files/didnt_understand.wav", "rb") as file:
-        player.player_thread(file)
+        player.player_thread_local(file)
 
 
 def couldnt_find():
     with open("../wav_files/couldnt_find.wav", "rb") as file:
-        player.player_thread(file)
+        player.player_thread_local(file)
 
 
 def what_to_play():
     with open("../wav_files/what_to_play.wav", "rb") as file:
-        player.player_thread(file)
+        player.player_thread_local(file)
 

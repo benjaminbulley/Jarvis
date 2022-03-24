@@ -2,10 +2,10 @@ import requests
 import logging
 import urllib.parse
 
-from audio_player import player
+import player
 
 
-def wolfram_query(question: str):
+def wolframalpha_query(question: str):
     formatted = urllib.parse.quote_plus(question)
     logging.debug("Formatted question: ", formatted)
     app_id = "6QLE9Y-R347K3E3HV"
@@ -24,4 +24,49 @@ def wolfram_query(question: str):
         return plaintext
     except KeyError as k:
         logging.error("Wolfram did not understand")
-        return player.player_thread("didnt_understand")  # singleton
+        return player.player_thread_local("didnt_understand")  # singleton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

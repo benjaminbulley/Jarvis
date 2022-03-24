@@ -6,7 +6,7 @@ from tkinter import *
 import logging
 import tkinter
 from tkinter import ttk
-from audio_player import player
+import player
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ class GUI:
         # Keep track of the switch button state on/off
         self.switch_on = False
         self.background_color_index = 00
-        self.colors = ["black", "cyan", "lightblue", "olive"]
+        self.colors = ["black", "cyan", "blue", "green"]
         self.on_img = PhotoImage(file="../images/on.png")
         self.off_img = PhotoImage(file="../images/off.png")
         self.switch_button = ttk.Button(mainframe, image=self.off_img, command=self.toggle, state=NORMAL)
@@ -70,12 +70,12 @@ class GUI:
             self.background_color_index = 1
             self.switch_on = True
             self.gui_mode = "listening"
-            player.player_thread("Play hello")
+            player.player_thread_local("../wav_files/hello.wav")
         else:
             self.switch_button.config(image=self.off_img)
             self.background_color_index = 0
             self.switch_on = False
-            player.player_thread("Play goodbye")
+            player.player_thread_local("../wav_files/goodbye.wav")
         self.set_background_img(self.colors[self.background_color_index])
 
     def gui_mode(self):

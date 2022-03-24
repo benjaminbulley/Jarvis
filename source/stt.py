@@ -1,6 +1,6 @@
 import requests
 import logging
-from audio_player import player
+import player
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,9 @@ def speech_to_text(sound_as_binary):
     """Sends the API request to convert speech to text.
     It expects sound as a wav file and returns the response object, which contains the text in:
     response["content"]["DisplayText"].
-    See also response["content"]["RecognitionStatus"] for confirmation that it worked."""
+    See also response["content"]["RecognitionStatus"] for confirmation that it worked.
+
+    """
     url = f'https://{region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1'
     params = {"language": "en-GB"}
     headers = {
@@ -29,7 +31,7 @@ def speech_to_text(sound_as_binary):
         return response.json().get("DisplayText")
     except requests.exceptions.ConnectionError:
         logging.error("Failed to establish a new connection")
-        player.player_thread("cant_connect")
+        player.player_thread_local("cant_connect")
 
 
 def process_speech():
