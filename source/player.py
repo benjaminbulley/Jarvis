@@ -58,7 +58,7 @@
 #
 ####################################################################################
 """
-On dealine day Im having to switch out pyaudio with pydub which seems to work fine.
+On dealine day I'm having to switch out pyaudio with pydub which seems to work only with local files.
 Im getting an error with pyaudio as :  UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 4942:
  character maps to <undefined>
 """
@@ -66,13 +66,18 @@ import threading
 from pydub import AudioSegment
 from pydub.playback import play
 import logging
+import simpleaudio as sa
 
 logger = logging.getLogger(__name__)
 
 
+def play(audio_data):
+    sa.play_buffer(audio_data, 2, 2, 44100)
+
+
 def player_local(path: str):
     """
-    this function plays local files
+    this function plays local files with the help pf pydub
     """
     f = AudioSegment.from_wav(path)
     play(f)
@@ -81,3 +86,9 @@ def player_local(path: str):
 def player_thread_local(audio_in):
     thread = threading.Thread(target=lambda y=audio_in: player_local(y), daemon=True)
     thread.start()
+
+
+def player_thread(blob):
+    thread = threading.Thread(target=lambda y=blob: play(y), daemon=True)
+    thread.start()
+

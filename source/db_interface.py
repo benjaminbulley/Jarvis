@@ -36,11 +36,11 @@ def play_audio(play_request: str):
         if "play loud" in play_request.lower():
             name, blob = loud_clip(cur)
             print(f"about to play:{name}")
-            player.player_thread_local(blob)
+            player.player_thread(blob)
         elif "play music" in play_request.lower():
             name, blob = music_clip(cur)
             print(f"about to play:{name}")
-            player.player_thread_local(blob)
+            player.player_thread(blob)
         else:
             what_to_play()
 
@@ -62,4 +62,3 @@ def couldnt_find():
 def what_to_play():
     with open("../wav_files/what_to_play.wav", "rb") as file:
         player.player_thread_local(file)
-

@@ -16,7 +16,6 @@ from stt import process_speech
 from tts import text_speech
 
 
-
 logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
