@@ -1,9 +1,5 @@
 import sqlite3
-import threading
-
-from audio_player import Player
-
-p = Player()
+from audio_player import player
 """
 Interface to a SQLite3 database.
 Note that sqlite3 is thread safe, for reading, but requires
@@ -33,33 +29,18 @@ def loud_clip(cur: sqlite3.Cursor) -> str:
     return (row[0], row[1])
 
 
-def play_audio(play_request):
+def play_audio(play_request: str):
     con = sqlite3.connect('sounds.db')
     cur = con.cursor()
     try:
-        if play_request == "hello":
-            p.play(open("../wav_files/hello.wav", "rb"))
-        elif play_request == "goodbye":
-            p.play(open("../wav_files/goodbye.wav", "rb"))
-        elif play_request == "couldnt_find":
-            p.play(open("../wav_files/couldnt_find.wav", "rb"))
-        elif play_request == "didnt_understand":
-            p.play(open("../wav_files/didnt_understand.wav", "rb"))
-        elif play_request == "what_to_play":
-            p.play(open("../wav_files/what_to_play.wav", "rb"))
-        elif play_request == "cant_connect":
-            p.play(open("../wav_files/cant_connect.wav", "rb"))
-        elif play_request == "output":
-            p.play(open("../wav_files/output.wav", "rb"))
-
-        elif play_request[5:].startswith == "loud":
+        if "play loud" in play_request.lower():
             name, blob = loud_clip(cur)
             print(f"about to play:{name}")
-            p.play(blob)
-        elif play_request[5:].startswith == "music":
+            player.player_thread(blob)
+        elif "play music" in play_request.lower():
             name, blob = music_clip(cur)
             print(f"about to play:{name}")
-            p.play(blob)
+            player.player_thread(blob)
         else:
             what_to_play()
 
@@ -68,22 +49,17 @@ def play_audio(play_request):
         couldnt_find()
 
 
-def player_thread(text_from_speech):
-    thread = threading.Thread(target=lambda x=text_from_speech: play_audio(x), daemon=True)
-    thread.start()
-    return thread
-
-
 def didnt_understand():
     with open("../wav_files/didnt_understand.wav", "rb") as file:
-        p.play(file)
+        player.player_thread(file)
 
 
 def couldnt_find():
     with open("../wav_files/couldnt_find.wav", "rb") as file:
-        p.play(file)
+        player.player_thread(file)
 
 
 def what_to_play():
     with open("../wav_files/what_to_play.wav", "rb") as file:
-        p.play(file)
+        player.player_thread(file)
+

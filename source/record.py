@@ -12,6 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 def record(duration=5.0) -> bool:
+    """ Uses Pyaudio to record an audio file in chucks
+    :Param duration of the recording - 5 seconds
+    """
+
     p = pyaudio.PyAudio()
     sleep(1.5)
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE,

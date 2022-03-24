@@ -2,7 +2,7 @@ import requests
 import logging
 import urllib.parse
 
-from player_logic import player_thread
+from audio_player import player
 
 
 def wolfram_query(question: str):
@@ -10,10 +10,10 @@ def wolfram_query(question: str):
     logging.debug("Formatted question: ", formatted)
     app_id = "6QLE9Y-R347K3E3HV"
     query_url = f"http://api.wolframalpha.com/v1/query?" \
-             f"appid={app_id}" \
-             f"&input={formatted}" \
-             f"&format=plaintext" \
-             f"&output=json"
+                f"appid={app_id}" \
+                f"&input={formatted}" \
+                f"&format=plaintext" \
+                f"&output=json"
     try:
         r = requests.get(query_url).json()
         data = r["queryresult"]["pods"][1]["subpods"][0]
@@ -24,4 +24,4 @@ def wolfram_query(question: str):
         return plaintext
     except KeyError as k:
         logging.error("Wolfram did not understand")
-        return player_thread("didnt_understand")
+        return player.player_thread("didnt_understand")  # singleton

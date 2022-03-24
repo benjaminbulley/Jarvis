@@ -1,7 +1,7 @@
 import requests
 import logging
 
-from player_logic import player_thread
+from audio_player import player
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -27,20 +27,23 @@ def text_speech(text):
     <speak version='1.0' xml:lang='en-US'>
     <voice xml:lang='en-US' xml:gender='Male' name='{voice}'>{text}</voice>
     </speak>"""
+    try:
+        response = requests.post(url, data=data, headers=headers)
+        print('response', response)
 
-    response = requests.post(url, data=data, headers=headers)
-    print('response', response)
-
-    logging.info(str(response))
+        logging.info(str(response))
+        with open("../wav_files/output.wav", "wb") as out:
+            out.write(response.content)
+    except requests.exceptions.ConnectionError:
+        logging.error("Failed to establish a new connection")
+        player.player_thread("cant_connect")
 
     # Requests returns binary content in response.content
     # If the data was zipped by the server, requests will unzip it by default.
     # https://docs.python-requests.org/en/master/user/quickstart/#binary-response-content
 
-    with open("../wav_files/output.wav", "wb") as out:
-        out.write(response.content)
-
-    player_thread("output")
+    with open("../wav_files/output.wav", "rb") as f:
+        player.player_thread(f)
 
 
 if __name__ == "__main__":

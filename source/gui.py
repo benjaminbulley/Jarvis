@@ -1,21 +1,18 @@
 """
 Front-End.
-
 This code defines the Graphical User Interface class
-
 """
 from tkinter import *
 import logging
 import tkinter
 from tkinter import ttk
-from audio_player import Player
-from player_logic import player_thread
+from audio_player import player
 
 logger = logging.getLogger(__name__)
 
 
 class GUI:
-    """A simple class
+    """The user interface class
     """
 
     def __init__(self, name: str) -> None:
@@ -50,7 +47,7 @@ class GUI:
 
         self.db_data = None
         self.gui_mode = "ready"
-        self.p = Player()
+        self.p = player  # dependency injection
 
     def run(self):
         self.background_color_index = 0
@@ -73,14 +70,13 @@ class GUI:
             self.background_color_index = 1
             self.switch_on = True
             self.gui_mode = "listening"
-            player_thread("Play hello")
+            player.player_thread("Play hello")
         else:
             self.switch_button.config(image=self.off_img)
             self.background_color_index = 0
             self.switch_on = False
-            player_thread("Play goodbye")
+            player.player_thread("Play goodbye")
         self.set_background_img(self.colors[self.background_color_index])
-
 
     def gui_mode(self):
         return self.gui_mode
@@ -93,12 +89,13 @@ class GUI:
 
     def answer(self):
         if self.gui_mode == "answer":
-            self.switch_button.config(state=NORMAL)
+            self.switch_button.config(state=DISABLED)
             self.background_color_index = 3
         self.set_background_img(self.colors[self.background_color_index])
 
     def play(self):
         if self.gui_mode == "play":
+            self.switch_button.config(state=NORMAL)
             self.background_color_index = 4
         self.set_background_img(self.colors[self.background_color_index])
 

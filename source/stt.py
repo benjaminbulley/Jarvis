@@ -1,7 +1,6 @@
 import requests
 import logging
-
-from player_logic import player_thread
+from audio_player import player
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +29,7 @@ def speech_to_text(sound_as_binary):
         return response.json().get("DisplayText")
     except requests.exceptions.ConnectionError:
         logging.error("Failed to establish a new connection")
-        player_thread("cant_connect")
+        player.player_thread("cant_connect")
 
 
 def process_speech():
