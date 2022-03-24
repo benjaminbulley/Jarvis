@@ -1,6 +1,7 @@
 import pyaudio
 import wave
 import logging
+from time import sleep
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def record(duration=5.0) -> bool:
     p = pyaudio.PyAudio()
-
+    sleep(1.5)
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE,
                     input=True, frames_per_buffer=CHUNK)
 

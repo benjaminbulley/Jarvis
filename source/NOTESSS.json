@@ -1,0 +1,225 @@
+{
+  'queryresult': {
+    'success': True,
+    'error': False,
+    'numpods': 5,
+    'datatypes': 'PlanetaryMoon',
+    'timedout': '',
+    'timedoutpods': '',
+    'timing': 1.211,
+    'parsetiming': 0.461,
+    'parsetimedout': False,
+    'recalculate': '',
+    'id': 'MSP6877199ehi3ibb4cdi9i0000169i522434824008',
+    'host': 'https://www6b3.wolframalpha.com',
+    'server': '18',
+    'related': 'https://www6b3.wolframalpha.com/api/v1/relatedQueries.jsp?id=MSPa6878199ehi3ibb4cdi9i00003b2686ed5890a65g1697175660060143921',
+    'version': '2.6',
+    'inputstring': 'What is the size of the moon',
+    'pods': [
+      {
+        'title': 'Input interpretation',
+        'scanner': 'Identity',
+        'id': 'Input',
+        'position': 100,
+        'error': False,
+        'numsubpods': 1,
+        'subpods': [
+          {
+            'title': '',
+            'plaintext': 'Moon | average radius'
+          }
+        ],
+        'expressiontypes': {
+          'name': 'Grid'
+        }
+      },
+      {
+        'title': 'Result',
+        'scanner': 'Data',
+        'id': 'Result',
+        'position': 200,
+        'error': False,
+        'numsubpods': 1,
+        'primary': True,
+        'subpods': [
+          {
+            'title': '',
+            'microsources': {
+              'microsource': 'PlanetaryMoonData'
+            },
+            'datasources': {
+              'datasource': [
+                'AllensAstrophysicalQuantities',
+                'SolarSystemDynamics'
+              ]
+            },
+            'plaintext': '1079.6 miles'
+          }
+        ],
+        'expressiontypes': {
+          'name': 'Default'
+        },
+        'states': [
+          {
+            'name': 'Show metric',
+            'input': 'Result__Show metric'
+          }
+        ]
+      },
+      {
+        'title': 'Unit conversions',
+        'scanner': 'Unit',
+        'id': 'UnitConversion',
+        'position': 300,
+        'error': False,
+        'numsubpods': 3,
+        'subpods': [
+          {
+            'title': '',
+            'plaintext': '1737.4 km (kilometers)'
+          },
+          {
+            'title': '',
+            'plaintext': '1.7374×10^6 meters'
+          },
+          {
+            'title': '',
+            'plaintext': '938.12 nmi (nautical miles)'
+          }
+        ],
+        'expressiontypes': [
+          {
+            'name': 'Default'
+          },
+          {
+            'name': 'Default'
+          },
+          {
+            'name': 'Default'
+          }
+        ]
+      },
+      {
+        'title': 'Comparisons as radius',
+        'scanner': 'Unit',
+        'id': 'ComparisonAsRadius',
+        'position': 400,
+        'error': False,
+        'numsubpods': 3,
+        'subpods': [
+          {
+            'title': '',
+            'plaintext': ' ≈ 0.27 × Earth mean radius ( 6.371×10^6 m )'
+          },
+          {
+            'title': '',
+            'plaintext': ' ≈ 0.71 × equatorial radius of Mercury ( 2.4397×10^6 m )'
+          },
+          {
+            'title': '',
+            'plaintext': ' ≈ 1.5 × equatorial radius of Pluto ( 1.185×10^6 m )'
+          }
+        ],
+        'expressiontypes': [
+          {
+            'name': 'Default'
+          },
+          {
+            'name': 'Default'
+          },
+          {
+            'name': 'Default'
+          }
+        ],
+        'infos': {
+          'text': 'tan^(-1)(x) is the inverse tangent function',
+          'links': [
+            {
+              'url': 'http://reference.wolfram.com/language/ref/ArcTan.html',
+              'text': 'Documentation',
+              'title': 'Mathematica'
+            },
+            {
+              'url': 'http://functions.wolfram.com/ElementaryFunctions/ArcTan',
+              'text': 'Properties',
+              'title': 'Wolfram Functions Site'
+            },
+            {
+              'url': 'http://mathworld.wolfram.com/InverseTangent.html',
+              'text': 'Definition',
+              'title': 'MathWorld'
+            }
+          ]
+        }
+      },
+      {
+        'title': 'Sizes',
+        'scanner': 'Data',
+        'id': 'Sizes:PlanetaryMoonData',
+        'position': 500,
+        'error': False,
+        'numsubpods': 1,
+        'subpods': [
+          {
+            'title': '',
+            'microsources': {
+              'microsource': 'PlanetaryMoonData'
+            },
+            'datasources': {
+              'datasource': [
+                'AllensAstrophysicalQuantities',
+                'SolarSystemDynamics',
+                'NationalSpaceScienceDataCenter',
+                'AstronomicalAlgorithms',
+                'PlanetaryTheoriesInRectangularAndSphericalVariables'
+              ]
+            },
+            'plaintext': "average radius | 1079.6 miles\nequatorial radius | 1080 miles\npolar radius | 1078.7 miles\naverage diameter | 2159.1 miles\nequatorial diameter | 2160 miles\npolar diameter | 2157.4 miles\nequatorial circumference | 6785.9 miles\nangular diameter | 32.305' (arcminutes)"
+          }
+        ],
+        'expressiontypes': {
+          'name': 'Grid'
+        },
+        'states': [
+          {
+            'name': 'Show metric',
+            'input': 'Sizes:PlanetaryMoonData__Show metric'
+          }
+        ]
+      }
+    ],
+    'assumptions': {
+      'type': 'SubCategory',
+      'word': 'the size',
+      'template': 'Assuming ${desc1}. Use ${desc2} instead',
+      'count': 4,
+      'values': [
+        {
+          'name': 'Radius',
+          'desc': 'average radius',
+          'input': '*DPClash.PlanetaryMoonP.the+size-_*Radius-'
+        },
+        {
+          'name': 'Diameter',
+          'desc': 'average diameter',
+          'input': '*DPClash.PlanetaryMoonP.the+size-_*Diameter-'
+        },
+        {
+          'name': 'Mass',
+          'desc': 'mass',
+          'input': '*DPClash.PlanetaryMoonP.the+size-_*Mass-'
+        },
+        {
+          'name': 'Volume',
+          'desc': 'volume',
+          'input': '*DPClash.PlanetaryMoonP.the+size-_*Volume-'
+        }
+      ]
+    },
+    'sources': {
+      'url': 'https://www6b3.wolframalpha.com/sources/PlanetaryMoonDataSourceInformationNotes.html',
+      'text': 'Planetary moon data'
+    }
+  }
+}

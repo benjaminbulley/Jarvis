@@ -1,6 +1,8 @@
 import requests
 import logging
 
+from player_logic import player_thread
+
 logger = logging.getLogger(__name__)
 
 subscription_key = '75f4ae5e6a6b46b7b5c69315f5c8dcbe'
@@ -22,13 +24,13 @@ def speech_to_text(sound_as_binary):
         # 'Connection': 'Keep-Alive',
         # 'Expect': '100-continue'
     }
-    response = requests.post(url=url, params=params, data=sound_as_binary, headers=headers)
-    if response.status_code == 200:
+    try:
+        response = requests.post(url=url, params=params, data=sound_as_binary, headers=headers)
+        print(response.json())
         return response.json().get("DisplayText")
-    # print("#" *20, response)
-
-    print(response.json())
-    return response
+    except requests.exceptions.ConnectionError:
+        logging.error("Failed to establish a new connection")
+        player_thread("cant_connect")
 
 
 def process_speech():

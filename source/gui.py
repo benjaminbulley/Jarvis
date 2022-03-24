@@ -8,8 +8,8 @@ from tkinter import *
 import logging
 import tkinter
 from tkinter import ttk
-import record
-from player import Player
+from audio_player import Player
+from player_logic import player_thread
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ class GUI:
         self.colors = ["black", "cyan", "lightblue", "olive"]
         self.on_img = PhotoImage(file="../images/on.png")
         self.off_img = PhotoImage(file="../images/off.png")
-        self.switch_button = ttk.Button(mainframe, image=self.off_img, command=self.switch, state=NORMAL)
+        self.switch_button = ttk.Button(mainframe, image=self.off_img, command=self.toggle, state=NORMAL)
         self.switch_button.pack(pady=50)
 
         self.db_data = None
@@ -54,10 +54,10 @@ class GUI:
 
     def run(self):
         self.background_color_index = 0
-        self.set_background(self.colors[self.background_color_index])
+        self.set_background_img(self.colors[self.background_color_index])
         self.root.mainloop()
 
-    def set_background(self, color: str):
+    def set_background_img(self, color: str):
         """Set the display colour.
 
         :param color: a colour name or RGB value
@@ -66,28 +66,21 @@ class GUI:
         logger.info(f"color={color}")
         self.style.configure('TFrame', background=color)
 
-    def switch(self):
+    def toggle(self):
         self.background_color_index += 1
         if not self.switch_on:
             self.switch_button.config(image=self.on_img)
             self.background_color_index = 1
             self.switch_on = True
             self.gui_mode = "listening"
-            self.hello()
+            player_thread("Play hello")
         else:
             self.switch_button.config(image=self.off_img)
             self.background_color_index = 0
             self.switch_on = False
-            self.goodbye()
-        self.set_background(self.colors[self.background_color_index])
+            player_thread("Play goodbye")
+        self.set_background_img(self.colors[self.background_color_index])
 
-    def hello(self):
-        with open("../wav_files/hello.wav", "rb") as file:
-            self.p.play(file)
-
-    def goodbye(self):
-        with open("../wav_files/goodbye.wav", "rb") as file:
-            self.p.play(file)
 
     def gui_mode(self):
         return self.gui_mode
@@ -96,18 +89,18 @@ class GUI:
         if self.gui_mode == "listening":
             self.switch_button.config(state=DISABLED)
             self.background_color_index = 2
-        self.set_background(self.colors[self.background_color_index])
+        self.set_background_img(self.colors[self.background_color_index])
 
     def answer(self):
         if self.gui_mode == "answer":
             self.switch_button.config(state=NORMAL)
             self.background_color_index = 3
-        self.set_background(self.colors[self.background_color_index])
+        self.set_background_img(self.colors[self.background_color_index])
 
     def play(self):
         if self.gui_mode == "play":
             self.background_color_index = 4
-        self.set_background(self.colors[self.background_color_index])
+        self.set_background_img(self.colors[self.background_color_index])
 
     def after(self):
         self.root.after(self.ms, self.after)

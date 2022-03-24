@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 def add_blob(cursor, path:str, content:any, size:int, music:bool, loud:bool) -> bool:
     logging.debug(f'add_blob({path})')
-    sql_insert = 'INSERT INTO "sounds" ("path", "content", "size", "music", "loud") VALUES (?, ?, ?, ?, ?)'
+    sql_insert = 'INSERT INTO "sounds" ("description", "content", "size", "music", "loud") VALUES (?, ?, ?, ?, ?)'
     cursor.execute(sql_insert, (path, content, size, music, loud))
     return True
 

@@ -5,13 +5,7 @@ logger = logging.getLogger(__name__)
 
 
 class SoundDB:
-    """
-    Interface to a SQLite3 database.
-    Note that sqlite3 is thread safe, for reading, but requires
-    check_same_thread=False is set in calls to connect().  By
-    default check_same_thread is True, so we leave it this way
-    and only access the DB from one thread.
-    """
+
     def __init__(self, con: str) -> None:
         """
         :param con: a valid URI, e.g. "file:sounds.db?mode=rw"
@@ -27,13 +21,6 @@ class SoundDB:
         con = sqlite3.connect(self.uri, uri=True)
         con.close()
         pass
-
-    def get_content(self, sound: str) -> bytes:
-        with sqlite3.connect(self.uri, uri=True) as con:
-            cur = con.cursor()
-            cur.execute('SELECT content FROM sounds WHERE name=?', (sound,))
-            row = cur.fetchone()
-            return row[0]
 
     def get_music(self, cur: sqlite3.Cursor) -> str:
         # Pick one clip at random
@@ -52,5 +39,3 @@ class SoundDB:
 
 
 # SoundDB("file:sounds.db?mode=ro")
-
-SoundDB.get_content()
