@@ -45,9 +45,7 @@ class GUI:
         self.switch_button = ttk.Button(mainframe, image=self.off_img, command=self.toggle, state=NORMAL)
         self.switch_button.pack(pady=50)
 
-        self.db_data = None
         self.gui_mode = "ready"
-        self.p = player  # dependency injection
 
     def run(self):
         self.background_color_index = 0
@@ -55,7 +53,8 @@ class GUI:
         self.root.mainloop()
 
     def set_background_img(self, color: str):
-        """Set the display colour.
+        """
+        Set the display colour.
 
         :param color: a colour name or RGB value
         :type color: str
@@ -64,6 +63,9 @@ class GUI:
         self.style.configure('TFrame', background=color)
 
     def toggle(self):
+        """
+        This toggle's the application on and off
+        """
         self.background_color_index += 1
         if not self.switch_on:
             self.switch_button.config(image=self.on_img)
@@ -79,40 +81,55 @@ class GUI:
         self.set_background_img(self.colors[self.background_color_index])
 
     def gui_mode(self):
+        """
+        function for class's attribute guimode
+        """
         return self.gui_mode
 
     def listening(self):
+        """
+        Define gui's behaviour when listening
+        """
         if self.gui_mode == "listening":
             self.switch_button.config(state=DISABLED)
             self.background_color_index = 2
         self.set_background_img(self.colors[self.background_color_index])
 
     def answer(self):
+        """
+        Define gui's behaviour when answering
+        """
         if self.gui_mode == "answer":
             self.switch_button.config(state=DISABLED)
             self.background_color_index = 3
         self.set_background_img(self.colors[self.background_color_index])
 
     def play(self):
+        """
+        Define gui's behaviour when playing sound
+        """
         if self.gui_mode == "play":
             self.switch_button.config(state=NORMAL)
             self.background_color_index = 4
         self.set_background_img(self.colors[self.background_color_index])
 
     def after(self):
+        """
+        Call after() to use to connect front-end to main app
+        """
         self.root.after(self.ms, self.after)
         self.func()
 
     def set_after(self, ms, func):
+        """
+        Uses the after() method to connect front-end to main app
+        """
         self.root.after(ms, self.after)
         self.ms = ms
         self.func = func
 
     def state(self):
+        """
+        Uses the after() method to connect front-end to main app
+        """
         return self._state
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-    a = GUI("Jarvis")
-    a.run()

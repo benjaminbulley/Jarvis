@@ -13,7 +13,8 @@ def speech_to_text(sound_as_binary):
     It expects sound as a wav file and returns the response object, which contains the text in:
     response["content"]["DisplayText"].
     See also response["content"]["RecognitionStatus"] for confirmation that it worked.
-
+    :params sound_as_binary (str)- open files or blobs
+    :returns response["content"]["DisplayText"]
     """
     url = f'https://{region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1'
     params = {"language": "en-GB"}
@@ -35,6 +36,9 @@ def speech_to_text(sound_as_binary):
 
 
 def process_speech():
+    """
+    opens output.wav which is rewritten by the record function and calls speech to text with it
+    """
     output = open("../wav_files/output.wav", "rb")
     results_from_stt = speech_to_text(output)
     print("stt results: ", results_from_stt)

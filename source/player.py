@@ -22,7 +22,7 @@
 #         logger.warning("close")
 #         self.p.terminate()
 #
-#     def play(self, audio_in: any):
+#     def play1(self, audio_in: any):
 #         """ Accepts audio in as blob and streams it through the speakers
 #         :param audio_in (any) is either a path to a WAV file or bytes containing WAV audio.
 #         """
@@ -58,9 +58,10 @@
 #
 ####################################################################################
 """
-On dealine day I'm having to switch out pyaudio with pydub which seems to work only with local files.
-Im getting an error with pyaudio as :  UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 4942:
+Switching out pyaudio last minute with pydub to play local files and simple audio to play bytes.
+I'm getting an error with pyaudio as :  UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 4942:
  character maps to <undefined>
+
 """
 import threading
 from pydub import AudioSegment
@@ -71,24 +72,37 @@ import simpleaudio as sa
 logger = logging.getLogger(__name__)
 
 
-def play(audio_data):
+def play_blob(audio_data: any):
+    """
+    Uses pydub to play audio, specifying sample rate
+    :params
+    """
     sa.play_buffer(audio_data, 2, 2, 44100)
 
 
-def player_local(path: str):
+def play_wav(path: str):
     """
-    this function plays local files with the help pf pydub
+    this function plays local files with the help of pydub
+    :params path (str)- path to wav file
     """
-    f = AudioSegment.from_wav(path)
+    f = AudioSegment.from_wav(path) # use AudioSegment to unpack the file from the path
     play(f)
 
 
-def player_thread_local(audio_in):
-    thread = threading.Thread(target=lambda y=audio_in: player_local(y), daemon=True)
+def player_thread_local(path: str):
+    """
+    threads the local file play_wav function, this is what prevents the ui from blocking when something is playing
+    :params path  (str)- path to wav file
+    """
+    thread = threading.Thread(target=lambda y=path: play_wav(y), daemon=True)
     thread.start()
 
 
-def player_thread(blob):
-    thread = threading.Thread(target=lambda y=blob: play(y), daemon=True)
+def player_thread(blob: any):
+    """
+    threads the local file
+    :params path  (blob)- bytes file from database
+    """
+    thread = threading.Thread(target=lambda y=blob: play_blob(y), daemon=True)
     thread.start()
 

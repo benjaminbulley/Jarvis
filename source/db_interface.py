@@ -1,21 +1,16 @@
+"""
+Some functions that interfaces with the database and plays local files
+"""
 import sqlite3
 import player
-"""
-Interface to a SQLite3 database.
-Note that sqlite3 is thread safe, for reading, but requires
-check_same_thread=False is set in calls to connect().  By
-default check_same_thread is True, so we leave it this way
-and only access the DB from one thread.
-"""
-
-
-def get_content(cur, sound: str) -> bytes:
-    cur.execute('SELECT description, content FROM sounds WHERE description=?', (sound,))
-    row = cur.fetchone()
-    return (row[0], row[1])
 
 
 def music_clip(cur: sqlite3.Cursor) -> str:
+    """
+    Collects blob from database where music is True
+    :param cur- Connection to database
+    :returns: description and content
+    """
     # Pick one clip at random
     cur.execute('SELECT description, content FROM sounds WHERE music=1 ORDER BY random() LIMIT 1')
     row = cur.fetchone()
@@ -23,6 +18,11 @@ def music_clip(cur: sqlite3.Cursor) -> str:
 
 
 def loud_clip(cur: sqlite3.Cursor) -> str:
+    """
+    Collects blob from database where loud is True
+    :param cur- Connection to database
+    :returns description and content
+    """
     # Pick one clip at random
     cur.execute('SELECT description, content FROM sounds WHERE loud=1 ORDER BY random() LIMIT 1')
     row = cur.fetchone()
@@ -30,6 +30,10 @@ def loud_clip(cur: sqlite3.Cursor) -> str:
 
 
 def play_audio(play_request: str):
+    """
+    logic for what kind of audio is played
+    :param play_request (str)- returned string from Speech to text
+    """
     con = sqlite3.connect('sounds.db')
     cur = con.cursor()
     try:

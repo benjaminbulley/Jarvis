@@ -7,6 +7,11 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def text_speech(some_text):
+    """
+    Sends the API request to convert text to speech
+    :params some_text (str)- open files or blobs
+    :returns streams audio to speaker with stream() method
+    """
     key = "75f4ae5e6a6b46b7b5c69315f5c8dcbe"
     region = "uksouth"
     url = f'https://{region}.tts.speech.microsoft.com/cognitiveservices/v1'
@@ -42,11 +47,4 @@ def text_speech(some_text):
     # If the data was zipped by the server, requests will unzip it by default.
     # https://docs.python-requests.org/en/master/user/quickstart/#binary-response-content
 
-    with open("../wav_files/output.wav", "rb") as f:
-        player.player_thread_local(f)
-
-
-if __name__ == "__main__":
-    text = "Check your Internet Connection"
-    text_speech(text)
-
+    player.player_thread_local("../wav_files/output.wav")
