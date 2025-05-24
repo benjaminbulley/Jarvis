@@ -1,0 +1,10 @@
+"""
+{{ script_docstring }}
+"""
+
+def main():
+    message = "{{ message_to_print }}"
+    print(message)
+
+if __name__ == "__main__":
+    main()

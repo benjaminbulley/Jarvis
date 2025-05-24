@@ -1,0 +1,35 @@
+# Agent Configuration for the Autonomous App Suite
+
+# List of available agents and their basic settings
+# The orchestrator might use this to discover and instantiate agents.
+agents:
+  - name: PlannerAgent
+    class: "agents.planner_agent.PlannerAgent" # Path to the agent class
+    description: "Responsible for creating an initial plan from an app specification."
+    enabled: true
+    # Example of agent-specific settings (can be expanded)
+    settings:
+      default_plan_level: "high"
+
+  - name: CodeGenAgent
+    class: "agents.codegen_agent.CodeGenAgent"
+    description: "Responsible for generating code based on a plan or specification."
+    enabled: true
+    settings:
+      default_language: "python"
+      # In a real system, might include things like:
+      # llm_model: "gpt-4"
+      # code_template_repository: "path/to/code_snippets"
+
+  - name: TestAgent
+    class: "agents.test_agent.TestAgent"
+    description: "Responsible for generating and running tests for the application code."
+    enabled: true
+    settings:
+      default_test_framework: "pytest"
+      # auto_generate_stubs: true
+
+# Global settings for the suite (example)
+suite_settings:
+  max_iterations_per_request: 10
+  default_app_output_directory: "apps/"
