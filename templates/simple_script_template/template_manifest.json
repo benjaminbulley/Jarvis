@@ -1,0 +1,12 @@
+{
+    "template_id": "simple_script_v1",
+    "template_name": "Simple Python Script",
+    "description": "A basic Python script template that prints a message. Contains placeholders for customization.",
+    "supported_app_types": ["script"],
+    "supported_languages_frameworks": ["python"],
+    "placeholder_definitions": {
+        "message_to_print": "The string message that the script will print.",
+        "script_docstring": "The docstring for the generated script."
+    },
+    "entry_point_script": "main.py"
+}

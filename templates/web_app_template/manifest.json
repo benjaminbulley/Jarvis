@@ -1,0 +1,12 @@
+{
+  "template_id": "web_app_basic",
+  "template_name": "Basic Web Application",
+  "description": "A simple template for a web application with Flask.",
+  "supported_app_types": ["web_application", "api_service"],
+  "supported_languages_frameworks": ["python", "flask"],
+  "placeholder_definitions": {
+    "{{APP_NAME}}": "The user-defined name of the application.",
+    "{{SECRET_KEY}}": "A unique secret key for session management."
+  },
+  "entry_point_script": "app.py"
+}
