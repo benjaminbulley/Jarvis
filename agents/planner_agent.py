@@ -1,13 +1,26 @@
-from typing import Any, Dict, Optional, List
+from typing import Any, Dict, Optional, List # Keep Any for now if process_request still uses it
 import os
 import json
 import logging
 
-from .base_agent import BaseAgent, AgentOutput
+from pydantic import BaseModel # Added BaseModel
+from .base_agent import BaseAgent, AgentOutput, TaskDefinition, TaskInputSpec, TaskOutputSpec # Added Task models
 from suite_core.app_spec import AppSpecification
 from suite_core.project_state import ProjectState
 
 logger = logging.getLogger(__name__)
+
+# --- Pydantic Models for Task I/O ---
+
+class ValidatedSpecData(BaseModel):
+    """
+    Output data structure for the 'validate_app_specification' task.
+    Contains the results of validating the AppSpecification.
+    """
+    validated_template_id: str
+    template_manifest_path: str # Path to the template's manifest file
+    template_manifest_content: Dict[str, Any] # The parsed content of the manifest
+    warnings: List[str] # List of warnings generated during validation
 
 def is_safe_output_path(path: str) -> bool:
     """
@@ -40,9 +53,10 @@ class PlannerAgent(BaseAgent):
     - Consistency of provided placeholder values against those defined in the
       template's manifest (issues warnings for discrepancies).
     """
-    async def process_request(self, app_spec: AppSpecification, project_state: ProjectState) -> AgentOutput:
+    async def process_request(self, app_spec: AppSpecification, project_state: ProjectState) -> AgentOutput: # This will be the main logic provider for the task
         """
         Validates the incoming AppSpecification and prepares data for subsequent agents.
+        This method's logic effectively implements the 'validate_app_specification' task.
 
         Args:
             app_spec (AppSpecification): The application specification to validate.
@@ -167,12 +181,34 @@ class PlannerAgent(BaseAgent):
         )
 
     async def execute_task(self, task_details: Any, project_state: ProjectState) -> AgentOutput:
-        logger.info("PlannerAgent: Execute task called (not typically used for this agent, using process_request instead).")
-        return AgentOutput(status="success", message="No specific task executed by planner via execute_task.")
+        # For now, execute_task might not be directly called if orchestration uses process_request.
+        # If it were to be the primary entry point for "validate_app_specification",
+        # task_details would need to be an instance of AppSpecification.
+        # This is a placeholder for future refinement if the agent interaction model changes.
+        logger.info(f"PlannerAgent: Execute task called with task_details of type: {type(task_details)}")
+        
+        if isinstance(task_details, AppSpecification):
+            # Simulate calling the main logic, which is currently in process_request
+            # In a future refactor, the core validation logic might be moved here
+            # or to a shared method.
+            logger.info("PlannerAgent: task_details is AppSpecification, proceeding with validation via process_request.")
+            return await self.process_request(app_spec=task_details, project_state=project_state)
+        else:
+            logger.warning("PlannerAgent: execute_task called with unexpected task_details type.")
+            return AgentOutput(status="failure", message="PlannerAgent: Invalid task_details for execute_task.")
 
-    def get_capabilities(self) -> dict:
+    def get_capabilities(self) -> Dict[str, TaskDefinition]:
         return {
-            "name": "PlannerAgent",
-            "description": "Takes an app specification and creates a high-level plan.",
-            "tasks": ["create_plan_from_spec"]
+            "validate_app_specification": TaskDefinition(
+                task_name="validate_app_specification",
+                description="Validates the AppSpecification, checking template existence, output path safety, and placeholder consistency.",
+                input_spec=TaskInputSpec(
+                    description="The full application specification object.",
+                    schema=AppSpecification
+                ),
+                output_spec=TaskOutputSpec(
+                    description="Results of the specification validation, including template details and any warnings.",
+                    schema=ValidatedSpecData
+                )
+            )
         }
